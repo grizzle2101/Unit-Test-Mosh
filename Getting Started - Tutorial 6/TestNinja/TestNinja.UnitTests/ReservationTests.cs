@@ -4,12 +4,10 @@ using TestNinja.Fundamentals;
 
 namespace TestNinja.UnitTests
 {
-    //Step 2 - Rename Class & Methods
     [TestClass]
     public class ReservationTests
     {
-        //Step 3 - Define the Scenarios
-        //Step 4 - Writing the Test
+
         [TestMethod]
         public void CanBeCancelledBy_UserIsAdmin_ReturnsTrue()
         {
@@ -23,16 +21,15 @@ namespace TestNinja.UnitTests
             Assert.IsTrue(result);
         }
 
-        //Step 6 - Complete the Other Scenarios:
+
         [TestMethod]
-        public void CanBeCancelledBy_MadeByUser_ReturnsTrue()
+        public void CanBeCancelledBy_SameUserCancellingTheReservervation_ReturnsTrue()
         {
             //Arrange
-            var reservation = new Reservation();
-            var user = new User { IsAdmin = false };
+            var user = new User();
+            var reservation = new Reservation { MadeBy = user};
 
             //Act
-            reservation.MadeBy = user;
             var result = reservation.CanBeCancelledBy(user);
 
             //Assert
@@ -40,13 +37,13 @@ namespace TestNinja.UnitTests
         }
 
         [TestMethod]
-        public void CanBeCancelledBy_IsNormalUser_ReturnsFalse()
+        public void CanBeCancelledBy_AnotherUserCancellingReservation_ReturnsFalse()
         {
             //Arrange
-            var reservation = new Reservation();
+            var reservation = new Reservation{MadeBy = new User()};
 
             //Act
-            var result = reservation.CanBeCancelledBy(new User { IsAdmin = false});
+            var result = reservation.CanBeCancelledBy(new User ());
 
             //Assert
             Assert.IsFalse(result);
