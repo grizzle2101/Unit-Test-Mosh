@@ -6,14 +6,8 @@
 
         public bool CanBeCancelledBy(User user)
         {
-            if (user.IsAdmin)
-                return true;
-            if (MadeBy == user)
-                return true;
-
-            return false;
-
-            //return (user.IsAdmin || MadeBy == user);
+            //Turning that Code into a Single line. Tests all G.
+            return (user.IsAdmin || MadeBy == user);
         }
         
     }
