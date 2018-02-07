@@ -4,6 +4,8 @@ namespace TestNinja.Fundamentals
 {
     public class Math
     {
+        //Single Execution Path = Single Test.
+        //Task 2 - Create Test for Add Function
         public int Add(int a, int b)
         { 
             return a + b;
