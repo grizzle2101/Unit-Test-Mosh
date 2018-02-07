@@ -13,7 +13,6 @@ namespace TestNinja.UnitTests
     {
         private Math _math;
 
-        //Tutorial 8 - Setup & TearDown
         [SetUp]
         public void SetUp()
         {
@@ -30,34 +29,18 @@ namespace TestNinja.UnitTests
             Assert.That(result, Is.EqualTo(3));
         }
 
-        [Test]
-        public void Max_FirstArgumentIsGreater_ReturnFirstArgument()
+        //Tutorial 9 - Parameterized Tests
+        [TestCase(2, 1, 2)]
+        [TestCase(1, 2, 2)]
+        [TestCase(1, 1, 1)]
+        public void Max_WhenCalled_ShoulReturnGreaterArgument(int a, int b, int expectedResult)
         {
             //Act
-            var result = _math.Max(2, 1);
+            var result = _math.Max(a, b);
 
             //Assert
-            Assert.That(result, Is.EqualTo(2));
+            Assert.That(result, Is.EqualTo(expectedResult));
             
-        }
-        [Test]
-        public void Max_SecondArgumentIsGreater_ReturnSecondArgument()
-        {
-            //Act
-            var result = _math.Max(1, 2);
-
-            //Assert
-            Assert.That(result, Is.EqualTo(2));
-
-        }
-        [Test]
-        public void Max_ArguementsAreEqual_ReturnsSameArgument()
-        {
-            //Act
-            var result = _math.Max(2, 2);
-
-            //Assert
-            Assert.That(result, Is.EqualTo(2));
         }
     }
 }
