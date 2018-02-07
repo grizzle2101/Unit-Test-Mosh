@@ -4,13 +4,15 @@ namespace TestNinja.Fundamentals
 {
     public class Math
     {
-        //Single Execution Path = Single Test.
+        //Tutorial 8 - Single Execution Path = Single Test.
         //Task 2 - Create Test for Add Function
         public int Add(int a, int b)
         { 
             return a + b;
         }
         
+        //Tutorial 7 - Task 3 - Create Tests for Max Function
+        //2 Execution Paths = 2 Tests.
         public int Max(int a, int b)
         {
             return (a > b) ? a : b;

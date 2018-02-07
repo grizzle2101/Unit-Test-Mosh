@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +24,46 @@ namespace TestNinja.UnitTests
 
             //Assert
             Assert.That(result, Is.EqualTo(3));
+        }
+
+        //Tutorial 7 - Task 3 - Create Tests for Max Function
+        [Test]
+        public void Max_FirstArgumentIsGreater_ReturnFirstArgument()
+        {
+            //Arrange
+            var math = new Math();
+
+            //Act
+            var result = math.Max(2, 1);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(2));
+            
+        }
+        [Test]
+        public void Max_SecondArgumentIsGreater_ReturnSecondArgument()
+        {
+            //Arrange
+            var math = new Math();
+
+            //Act
+            var result = math.Max(1, 2);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(2));
+
+        }
+        [Test]
+        public void Max_ArguementsAreEqual_ReturnsSameArgument()
+        {
+            //Arrange
+            var math = new Math();
+
+            //Act
+            var result = math.Max(2, 2);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(2));
         }
     }
 }
