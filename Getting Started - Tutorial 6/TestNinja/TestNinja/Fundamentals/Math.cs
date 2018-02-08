@@ -4,8 +4,10 @@ namespace TestNinja.Fundamentals
 {
     public class Math
     {
+        //Testing your Tests
         public int Add(int a, int b)
-        { 
+        {
+            //return int.MaxValue; - Sanity Check Unit Tests
             return a + b;
         }
         
