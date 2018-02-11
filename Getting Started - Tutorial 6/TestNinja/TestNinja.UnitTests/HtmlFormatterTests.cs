@@ -8,8 +8,6 @@ using TestNinja.Fundamentals;
 
 namespace TestNinja.UnitTests
 {
-    //Section 3 - Tutorial 2
-    //Task 1 - Create Test for HTML Formatter
     [TestFixture]
     public class HtmlFormatterTests
     {
