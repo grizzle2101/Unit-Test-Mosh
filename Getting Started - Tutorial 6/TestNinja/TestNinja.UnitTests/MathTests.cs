@@ -20,7 +20,6 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        //Tutorial 10 - Writing Trustworthy Tests
         //[Ignore("Becuase i Wanted to...")]
         public void Add_WhenCalled_ReturnSumOfArguments()
         {
