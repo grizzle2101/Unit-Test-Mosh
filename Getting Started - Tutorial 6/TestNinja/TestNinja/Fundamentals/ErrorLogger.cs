@@ -3,7 +3,7 @@ using System;
 
 namespace TestNinja.Fundamentals
 {
-    //Section 3 - Tutorial 5 - Testing Void Methods:
+    //Section 3 - Tutorial 6 - Testing Exceptions:
     public class ErrorLogger
     {
         public string LastError { get; set; }
@@ -13,11 +13,15 @@ namespace TestNinja.Fundamentals
 
         public void Log(string error)
         {
+            //Test Cases:
+            //1 - Null
+            //2 - Empty String
+            //3 - String with WhiteSpae
+
+            //Sanity Check Comment out these 2 lines
             if (String.IsNullOrWhiteSpace(error))
                 throw new ArgumentNullException();
 
-            //Changing State of LastError
-            //To Test this, we test the State of LastError
             LastError = error; 
             
             // Write the log to a storage
