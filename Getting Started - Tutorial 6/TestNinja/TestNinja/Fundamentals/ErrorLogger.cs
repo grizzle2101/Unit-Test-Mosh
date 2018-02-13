@@ -3,7 +3,7 @@ using System;
 
 namespace TestNinja.Fundamentals
 {
-    //Section 3 - Tutorial 6 - Testing Exceptions:
+    //Section 3 - Tutorial 7 - Testing methods that Raise an Event:
     public class ErrorLogger
     {
         public string LastError { get; set; }
@@ -13,12 +13,6 @@ namespace TestNinja.Fundamentals
 
         public void Log(string error)
         {
-            //Test Cases:
-            //1 - Null
-            //2 - Empty String
-            //3 - String with WhiteSpae
-
-            //Sanity Check Comment out these 2 lines
             if (String.IsNullOrWhiteSpace(error))
                 throw new ArgumentNullException();
 

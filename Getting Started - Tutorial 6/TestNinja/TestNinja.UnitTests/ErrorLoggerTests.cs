@@ -24,7 +24,7 @@ namespace TestNinja.UnitTests
         public void Log_WhenCalled_ShouldSetLastErrorProperty()
         {
             //Arrange
-            _logger = new ErrorLogger();
+            //_logger = new ErrorLogger();
 
             //Act
             _logger.Log("abc");
@@ -41,7 +41,8 @@ namespace TestNinja.UnitTests
         public void Log_InvalidError_ThrowArgumentNullException(string error)
         {
             //Arrange
-            _logger = new ErrorLogger();
+            //_logger = new ErrorLogger();
+
 
             //Assert
             Assert.That(() => _logger.Log(error), Throws.ArgumentNullException);
@@ -49,6 +50,21 @@ namespace TestNinja.UnitTests
             //Testing Custom Exceptions
             //Assert.That(() => _logger.Log(error), Throws.Exception.TypeOf<DivideByZeroException>());
 
+        }
+
+        //Testing a Method that Raises an Event
+        [Test]
+        public void Log_ValidError_ShouldRaiseErrorLoggedEvent()
+        {
+            var id = Guid.Empty;
+            //Subscribe to Event
+            _logger.ErrorLogged += (sender, args) => { id = args;};
+
+            //Act
+            _logger.Log("abc");
+
+            //Assert
+            Assert.That(id, Is.Not.EqualTo(Guid.Empty));
         }
     }
 }
