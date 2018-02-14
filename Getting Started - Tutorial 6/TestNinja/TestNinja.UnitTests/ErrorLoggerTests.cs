@@ -34,6 +34,9 @@ namespace TestNinja.UnitTests
 
         }
 
+        //Task 3 - Reworking Test to work with new Private Implementation
+        //Demonstrating testing the public interface is better, we can still have our private Implementation
+        //AS long as its called within Log method
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -52,19 +55,21 @@ namespace TestNinja.UnitTests
 
         }
 
-        //Testing a Method that Raises an Event
-        [Test]
-        public void Log_ValidError_ShouldRaiseErrorLoggedEvent()
-        {
-            var id = Guid.Empty;
-            //Subscribe to Event
-            _logger.ErrorLogged += (sender, args) => { id = args;};
 
-            //Act
-            _logger.Log("abc");
+        //In Summary this is why we don't test protected Implementation
+        //Task 1 - Making Error ID Private & not passed in OnErrorLogged()
+        //[Test]
+        //public void Log_ValidError_ShouldRaiseErrorLoggedEvent()
+        //{
+        //    //var id = Guid.Empty;
+        //    //Subscribe to Event
+        //    //_logger.ErrorLogged += (sender, args) => { id = args;};
 
-            //Assert
-            Assert.That(id, Is.Not.EqualTo(Guid.Empty));
-        }
+        //    //Act
+        //    //_logger.Log("abc");
+
+        //    //Assert
+        //    //Assert.That(id, Is.Not.EqualTo(Guid.Empty));
+        //}
     }
 }
