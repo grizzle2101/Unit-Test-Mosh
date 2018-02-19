@@ -32,22 +32,44 @@ namespace TestNinja.UnitTests
         }
 
         //Exception Handling
+        //Mosh - Scenario with a Negative Value
+        //Mosh - Paramerize for Multiple Tests
+        //Mosh - Make more generic
         [Test]
-        public void CalculateDemeritPoints_SpeedOver300_ShouldRaiseException()
+        [TestCase(-1)]
+        [TestCase(301)]
+        public void CalculateDemeritPoints_SpeedisOutOfRange_ShouldThrowArgumentOutOfRangeException(int value)
         {
             //Arrange
             //Act
 
             //Assert
-            Assert.That(() => _calculator.CalculateDemeritPoints(350), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => _calculator.CalculateDemeritPoints(value), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
         }
 
+        ////Scenario with speed over 300
+        ////Don't need this Test anymore.
+        //[Test]
+        //public void CalculateDemeritPoints_SpeedOver300_ShouldRaiseException()
+        //{
+        //    //Arrange
+        //    //Act
+
+        //    //Assert
+        //    Assert.That(() => _calculator.CalculateDemeritPoints(301), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
+        //}
+
         //Normal Tests
+        //Mosh - Make Method name more Generic
+        //Mosh - 3 Tests Cases (0, 64, 65, 66, 70, 75)
         [Test]
-        [TestCase(50, 0)]
+        [TestCase(0, 0)]
+        [TestCase(64, 0)]
         [TestCase(65, 0)]
-        [TestCase(85, 4)]
-        public void CalculateDemeritPoints_WhenCalled_ShouldReturnPointOverEvery5(int speed, int expected)
+        [TestCase(66, 0)]
+        [TestCase(70, 1)]
+        [TestCase(75, 2)]
+        public void CalculateDemeritPoints_WhenCalled_ReturnDemitPoints(int speed, int expected)
         {
             //Arrange
             //Act
