@@ -28,19 +28,14 @@ namespace TestNinja.UnitTests
             _stack = new Stack<string>();
         }
 
-        //Push Invalid Object
-        //Testing Exception
+        //Push Method Tests
+        //Exception
         [Test]
         public void Push_PassInvalidObject_ShouldRaiseException()
         {
-            //Act
             //Assert
-            var stack = new Stack<string>();
-
-            stack.Push(null);
-
             //Issue here Null not triggering Exception, Move on & come back.
-            Assert.That(() => stack.Push(null), Throws.ArgumentNullException);
+            Assert.That(() => _stack.Push(null), Throws.ArgumentNullException);
         }
 
         //Push Valid Object
@@ -56,9 +51,83 @@ namespace TestNinja.UnitTests
         }
 
         //Additional Test for Count, as Count could return 1 and just pass, we need to test more than 1.
+        [Test]
+        public void Push_Pass2ValidObjects_Should2AddObjectToStack()
+        {
+            //Act
+            _stack.Push("a");
+            _stack.Push("b");
+
+            //Assert
+            Assert.That(_stack.Count, Is.EqualTo(2));
+        }
 
         //Pop Method Tests
+        //Remove from Empty Stack
+        [Test]
+        public void Pop_AttemptToRemoveItemNotExist_ShouldThrowInvalidOperationException()
+        {
+
+            //Assert
+            Assert.That(() => _stack.Pop(), Throws.InvalidOperationException);
+
+        }
+
+        //Happy Path Test
+        [Test]
+        public void Pop_RemoveValidItemFromList_ShouldReturnItem()
+        {
+            //Act
+            _stack.Push("abc");
+            var result = _stack.Pop();
+
+
+            //Assert
+            Assert.That(result, Is.EqualTo("abc"));
+
+        }
+
+        //Stack Sorting
+        [Test]
+        public void Pop_HaveMultipleValuesPopTop_ShouldReturnLast()
+        {
+            //Act
+            _stack.Push("abc");
+            _stack.Push("123");
+            _stack.Push("xyz");
+
+            var result = _stack.Pop();
+
+            //Assert
+            Assert.That(result, Is.EqualTo("xyz"));
+            Assert.That(_stack.Count, Is.EqualTo(2));
+
+        }
 
         //Peek Method Tests
+        //Error Handling
+        [Test]
+        public void Peek_PeekWithNoItemsInStack_RaiseInvalidOperationException()
+        {
+
+            //Assert
+            Assert.That(() => _stack.Peek(), Throws.InvalidOperationException);
+        }
+
+
+        [Test]
+        public void Peek_WhenCalled_ReturnsItemFromStack()
+        {
+            //Act
+            _stack.Push("one");
+            _stack.Push("two");
+            _stack.Push("three");
+
+            var result = _stack.Peek();
+
+            //Assert
+            Assert.That(result, Is.EqualTo("three"));
+            Assert.That(_stack.Count, Is.EqualTo(3));
+        }
     }
 }
