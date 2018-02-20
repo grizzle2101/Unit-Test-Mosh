@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using TestNinja.Fundamentals;
 
 namespace TestNinja.UnitTests
 {
@@ -19,27 +20,23 @@ namespace TestNinja.UnitTests
     [TestFixture]
     public class StackTests
     {
-        public Stack<string> _stack;
+        public TestNinja.Fundamentals.Stack<string> _stack;
 
         [SetUp]
         public void SetUp()
         {
             //Arrange
-            _stack = new Stack<string>();
+            _stack = new Fundamentals.Stack<string>();
         }
 
-        //Push Method Tests
-        //Exception
+        //Push Exception Handling
         [Test]
-        public void Push_PassInvalidObject_ShouldRaiseException()
+        public void Push_NullObject_ThrowArgumentNullException()
         {
-            //Assert
-            //Issue here Null not triggering Exception, Move on & come back.
             Assert.That(() => _stack.Push(null), Throws.ArgumentNullException);
         }
 
         //Push Valid Object
-        //Testing Void Method
         [Test]
         public void Push_PassValidObject_ShouldAddObjectToStack()
         {
@@ -50,83 +47,92 @@ namespace TestNinja.UnitTests
             Assert.That(_stack.Count, Is.EqualTo(1));
         }
 
-        //Additional Test for Count, as Count could return 1 and just pass, we need to test more than 1.
+        //Count Method
         [Test]
-        public void Push_Pass2ValidObjects_Should2AddObjectToStack()
+        public void Count_PassNothing_CountShouldRemain0()
         {
             //Act
-            _stack.Push("a");
-            _stack.Push("b");
-
             //Assert
-            Assert.That(_stack.Count, Is.EqualTo(2));
+            Assert.That(_stack.Count, Is.EqualTo(0));
         }
 
-        //Pop Method Tests
-        //Remove from Empty Stack
-        [Test]
-        public void Pop_AttemptToRemoveItemNotExist_ShouldThrowInvalidOperationException()
-        {
 
+        //Pop Exception Handling
+        [Test]
+        public void Pop_EmptyStack_ShouldThrowInvalidOperationException()
+        {
             //Assert
             Assert.That(() => _stack.Pop(), Throws.InvalidOperationException);
-
         }
 
-        //Happy Path Test
+        //Pop - Return Last Item
         [Test]
-        public void Pop_RemoveValidItemFromList_ShouldReturnItem()
+        public void Pop_StackWithAFewObjects_ShouldReturnLastItem()
         {
+            //Arrange
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
             //Act
-            _stack.Push("abc");
-            var result = _stack.Pop();
-
-
-            //Assert
-            Assert.That(result, Is.EqualTo("abc"));
-
-        }
-
-        //Stack Sorting
-        [Test]
-        public void Pop_HaveMultipleValuesPopTop_ShouldReturnLast()
-        {
-            //Act
-            _stack.Push("abc");
-            _stack.Push("123");
-            _stack.Push("xyz");
-
             var result = _stack.Pop();
 
             //Assert
-            Assert.That(result, Is.EqualTo("xyz"));
+            Assert.That(result, Is.EqualTo("c"));
+        }
+
+        //Pop - Stack Count
+        [Test]
+        public void Pop_StackWithAFewObjects_RemoveObjectOnTop()
+        {
+            //Arrange
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
+            //Act
+            var result = _stack.Pop();
+
+            //Assert
             Assert.That(_stack.Count, Is.EqualTo(2));
-
         }
 
-        //Peek Method Tests
-        //Error Handling
+        //Peek - Empty Stack
         [Test]
-        public void Peek_PeekWithNoItemsInStack_RaiseInvalidOperationException()
+        public void Peek_EmptyStack_ThrowInvalidOperationException()
         {
-
             //Assert
             Assert.That(() => _stack.Peek(), Throws.InvalidOperationException);
         }
 
-
+        //Peek - Shows Valid Object
         [Test]
-        public void Peek_WhenCalled_ReturnsItemFromStack()
+        public void Peek_StackWithAFewObjects_ReturnsItemFromStack()
         {
             //Act
-            _stack.Push("one");
-            _stack.Push("two");
-            _stack.Push("three");
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
 
             var result = _stack.Peek();
 
             //Assert
-            Assert.That(result, Is.EqualTo("three"));
+            Assert.That(result, Is.EqualTo("c"));
+        }
+
+        //Peek - Does not remove Object
+        [Test]
+        public void Peek_StackWithAFewObjects_DoesNotRemoveItemFromStack()
+        {
+            //Arrange
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
+            //Act
+            _stack.Peek();
+
+            //Assert
             Assert.That(_stack.Count, Is.EqualTo(3));
         }
     }
