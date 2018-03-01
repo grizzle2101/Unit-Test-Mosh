@@ -10,7 +10,11 @@ namespace TestNinja.Mocking
     {
         public static void Main()
         {
-            //Task 3 - Cleanup Production Code
+            //Task 1 - Changing the Constructor Signature - Breaks Existing Code.
+            //var service = new VideoService(new FileReader());
+
+            //Task 2 - Default Constructor - Avoids Breaking Production Code.
+            //Task 3 - Constructor w Optional Param - Avoids Breaking Production Code & Duplication
             var service = new VideoService();
             service.ReadVideoTitle();
         }
