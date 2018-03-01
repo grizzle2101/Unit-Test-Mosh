@@ -7,28 +7,12 @@ using Newtonsoft.Json;
 
 namespace TestNinja.Mocking
 {
-    //Section 5 - Tutorial 3 - Refactoring towards a Loosely Coupled design.
+    //Section 5 - Tutorial 4 - Injecting via Method Parameters.
     public class VideoService
     {
-        //Method 1
-        //Read the Content of a Video.txt
-        //Deserialize Video as JSON Object
-        //Check if Parsing complete successfully & we have our Video object.
+        //Task 1 - Use Interface
         public string ReadVideoTitle(IFileReader reader)
         {
-            //Task 1 - Extract Calls to External Resources
-            //var str = File.ReadAllText("video.txt");
-
-
-            //Task 2 - Extract Interface
-            //var str = new FileReader().Read("video.txt");
-
-            //Task 3 - Use Mock Object
-            //There are 3 ways to pass in this Object.
-            //1 - As a Parameter in ReadVideoTitle
-            //2 - As a Property
-            //3 - Through a Constructor Parameter
-            //Finally we refactored that sigle line of code : )
             var str = reader.Read("video.txt");
 
             var video = JsonConvert.DeserializeObject<Video>(str);
