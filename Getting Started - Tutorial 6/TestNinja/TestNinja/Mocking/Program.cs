@@ -8,11 +8,11 @@ namespace TestNinja.Mocking
 {
     public class Program
     {
-        //Task 2 - Create Production Implementation
         public static void Main()
         {
+            //Task 3 - Cleanup Production Code
             var service = new VideoService();
-            service.ReadVideoTitle(new FileReader());
+            service.ReadVideoTitle();
         }
     }
 }

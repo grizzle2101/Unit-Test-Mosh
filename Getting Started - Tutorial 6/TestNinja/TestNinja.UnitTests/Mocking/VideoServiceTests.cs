@@ -8,7 +8,6 @@ using TestNinja.Mocking;
 
 namespace TestNinja.UnitTests.Mocking
 {
-    //Task 3 - Create Unit Test Class
     [TestFixture]
     public class VideoServiceTests
     {
@@ -17,11 +16,10 @@ namespace TestNinja.UnitTests.Mocking
         public void ReadVideoTitle_EmptyFile_ReturnError()
         {
             //Arrange
-            var service = new VideoService();
+            var service = new VideoService() { FileReader = new FakeFileReader()};
 
             //Act
-            //Passing Fake File Reader
-            var result = service.ReadVideoTitle(new FakeFileReader());
+            var result = service.ReadVideoTitle();
 
             //Assert
             Assert.That(result, Does.Contain("error").IgnoreCase);

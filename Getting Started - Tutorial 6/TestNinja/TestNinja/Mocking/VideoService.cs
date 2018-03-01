@@ -7,13 +7,21 @@ using Newtonsoft.Json;
 
 namespace TestNinja.Mocking
 {
-    //Section 5 - Tutorial 4 - Injecting via Method Parameters.
+    //Tutorial 5 - Dependency Injection via Properties
     public class VideoService
     {
-        //Task 1 - Use Interface
-        public string ReadVideoTitle(IFileReader reader)
+        //Task 1 - Create Property
+        public IFileReader FileReader { get; set;}
+
+        //Task 2 - instantiate via Constructor
+        public VideoService()
         {
-            var str = reader.Read("video.txt");
+            FileReader = new FileReader();
+        }
+
+        public string ReadVideoTitle()
+        {
+            var str = FileReader.Read("video.txt");
 
             var video = JsonConvert.DeserializeObject<Video>(str);
             if (video == null)
