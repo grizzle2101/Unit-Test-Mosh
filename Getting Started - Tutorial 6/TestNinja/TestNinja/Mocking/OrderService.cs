@@ -14,7 +14,7 @@
         public int PlaceOrder(Order order)
         {
             //Sanity Check Test
-            return 1;
+            //return 1;
             var orderId = _storage.Store(order);
             
             // Some other work
