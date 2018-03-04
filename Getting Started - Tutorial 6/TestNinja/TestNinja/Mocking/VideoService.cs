@@ -18,7 +18,6 @@ namespace TestNinja.Mocking
             _fileReader = reader ?? new FileReader();
         }
 
-        //Task 4 - Program Moq to Call Read & Pass video.txt
         public string ReadVideoTitle()
         {
             var str = _fileReader.Read("video.txt");

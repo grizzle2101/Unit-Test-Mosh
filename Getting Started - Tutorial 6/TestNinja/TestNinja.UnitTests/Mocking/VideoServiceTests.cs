@@ -10,13 +10,6 @@ using TestNinja.Mocking;
 
 namespace TestNinja.UnitTests.Mocking
 {
-    //Tutorial 8 - Creating Mock Objecsts using Mock Frameworks
-    //Task 1 - Add NuGet package MOQ
-    //Task 2 - Delete FakeFileReader
-    //Task 3 - Create MOQ Object
-    //Task 4 - Use MOQ Object
-    //Task 5 - Cleanup with Setup
-
     [TestFixture]
     public class VideoServiceTests
     {
