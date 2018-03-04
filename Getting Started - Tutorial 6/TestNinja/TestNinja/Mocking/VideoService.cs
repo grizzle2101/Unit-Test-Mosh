@@ -7,32 +7,18 @@ using Newtonsoft.Json;
 
 namespace TestNinja.Mocking
 {
-    //Tutorial 5 - Dependency Injection via Constructor
+
     public class VideoService
     {
         private IFileReader _fileReader;
 
-        //Task 2 - Seperate Default Constructor - Avoids Breaking Production Code.
-        public VideoService()
-        {
-            _fileReader = new FileReader();
-        }
 
-
-
-        ////Task 1 - Changing the Constructor Signature - Breaks Existing Code.
-        //public VideoService(IFileReader reader)
-        //{
-        //    _fileReader = reader;
-        //}
-
-        //Constructor Injection.
-        //Task 3 - Constructor w Set value
         public VideoService(IFileReader reader = null)
         {
             _fileReader = reader ?? new FileReader();
         }
 
+        //Task 4 - Program Moq to Call Read & Pass video.txt
         public string ReadVideoTitle()
         {
             var str = _fileReader.Read("video.txt");
