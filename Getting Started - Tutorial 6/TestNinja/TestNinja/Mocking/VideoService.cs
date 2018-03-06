@@ -11,11 +11,13 @@ namespace TestNinja.Mocking
     public class VideoService
     {
         private IFileReader _fileReader;
+        private IVideoRepository _videoRepository;
 
-
-        public VideoService(IFileReader reader = null)
+        //Poor Mans Dependency Injection
+        public VideoService(IFileReader reader = null, IVideoRepository repository = null)
         {
             _fileReader = reader ?? new FileReader();
+            _videoRepository = repository ?? new VideoRepository();
         }
 
         public string ReadVideoTitle()
@@ -28,24 +30,23 @@ namespace TestNinja.Mocking
             return video.Title;
         }
 
+        //Tutorial 6 - Excercises - Tutorial 2 - Refactor for Testability.
+        //Task 1 - Extract Calls to External Resources
+        //Task 2 - Program to Interface
+        //Task 3 - Refactor for Dependency Injection
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = new List<int>();
-            
-            using (var context = new VideoContext())
-            {
-                var videos = 
-                    (from video in context.Videos
-                    where !video.IsProcessed
-                    select video).ToList();
-                
-                foreach (var v in videos)
-                    videoIds.Add(v.Id);
+            var videos = _videoRepository.GetVideos();
 
-                return String.Join(",", videoIds);
-            }
+            foreach (var v in videos)
+                videoIds.Add(v.Id);
+
+            //return"1"; Sanity Check
+            return String.Join(",", videoIds);
         }
     }
+
 
     public class Video
     {
