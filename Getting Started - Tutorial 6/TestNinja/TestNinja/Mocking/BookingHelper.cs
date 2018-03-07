@@ -4,26 +4,30 @@ using System.Linq;
 
 namespace TestNinja.Mocking
 {
+    //Section 7 - Booking Helper Excercise
+    //Task 3 - Refactor
     public static class BookingHelper
     {
-        public static string OverlappingBookingsExist(Booking booking)
+        public static string OverlappingBookingsExist(Booking booking, IBookingRepository repository)
         {
             if (booking.Status == "Cancelled")
                 return string.Empty;
 
-            var unitOfWork = new UnitOfWork();
-            var bookings =
-                unitOfWork.Query<Booking>()
-                    .Where(
-                        b => b.Id != booking.Id && b.Status != "Cancelled");
+            var bookings = repository.GetActiveBookings(booking.Id);
 
+            //We Found a Bug here with Test Case 3.
+            //Doing this manually would have taken a very long time to deploy Application
+            //Test the various dates, then do the same after bugfix.
+            
+            //After Googleing Date Overlap Alghoritm, got a better way with less code!
+            //Tests all still green so big win!
+            //bool overlap = tStartA < tEndB
+                           //** tStartB < tEndA;
             var overlappingBooking =
                 bookings.FirstOrDefault(
                     b =>
-                        booking.ArrivalDate >= b.ArrivalDate
-                        && booking.ArrivalDate < b.DepartureDate
-                        || booking.DepartureDate > b.ArrivalDate
-                        && booking.DepartureDate <= b.DepartureDate);
+                        booking.ArrivalDate < b.DepartureDate &&
+                        b.ArrivalDate < booking.DepartureDate);
 
             return overlappingBooking == null ? string.Empty : overlappingBooking.Reference;
         }
