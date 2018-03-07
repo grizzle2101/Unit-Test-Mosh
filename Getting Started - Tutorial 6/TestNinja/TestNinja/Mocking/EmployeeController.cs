@@ -2,21 +2,30 @@
 
 namespace TestNinja.Mocking
 {
+    //Section 6 - Tutorial 7 - Empployee Controller.
+    //This is a Sample of an ASP.NET MVC Application.
+    //Test 1 - This Returns Correct Result.
+    //Test 2 - Employee Deleted from Database.
+    //Test 3 - Make sure Correct Employee Details sent to Mock.
+
     public class EmployeeController
     {
-        private EmployeeContext _db;
+        //private EmployeeContext _db;
+        private IEmployeeStorage _employeeStorage;
 
-        public EmployeeController()
+        public EmployeeController(IEmployeeStorage employeeStorage = null)
         {
-            _db = new EmployeeContext();
+            //_db = new EmployeeContext();
+            _employeeStorage = employeeStorage ?? new EmployeeStorage();
         }
 
+
+        //Task 3 - Refactor
         public ActionResult DeleteEmployee(int id)
         {
-            var employee = _db.Employees.Find(id);
-            _db.Employees.Remove(employee);
-            _db.SaveChanges();
-            return RedirectToAction("Employees");
+            //_employeeRepository.DeleteEmployee(id);
+            _employeeStorage.DeleteEmployee(id);
+            return RedirectToAction("Employees"); 
         }
 
         private ActionResult RedirectToAction(string employees)
@@ -29,6 +38,7 @@ namespace TestNinja.Mocking
  
     public class RedirectResult : ActionResult { }
     
+    //Another DB Context
     public class EmployeeContext
     {
         public DbSet<Employee> Employees { get; set; }
