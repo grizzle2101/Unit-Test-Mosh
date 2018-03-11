@@ -33,7 +33,14 @@ namespace TestNinja.Mocking
         }
     }
 
-    public class UnitOfWork
+    //Refactor One
+    //Task 1 & 2 - Extract to Interface
+    public interface IUnitOfWork
+    {
+        IQueryable<T> Query<T>();
+    }
+
+    public class UnitOfWork : IUnitOfWork
     {
         public IQueryable<T> Query<T>()
         {
