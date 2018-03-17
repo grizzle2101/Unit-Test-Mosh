@@ -31,7 +31,8 @@ namespace TestNinja.Mocking
 
             foreach (var housekeeper in housekeepers)
             {
-                if (housekeeper.Email == null)
+                //Bug Fix - WhiteSpace Email
+                if (String.IsNullOrWhiteSpace(housekeeper.Email))
                     continue;
 
                 //Refactor Two

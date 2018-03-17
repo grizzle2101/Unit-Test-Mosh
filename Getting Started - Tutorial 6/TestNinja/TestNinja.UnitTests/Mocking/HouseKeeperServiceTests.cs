@@ -16,6 +16,8 @@ namespace TestNinja.UnitTests.Mocking
         private Mock<IStatementGenerator> _statementGenerator;
         private Mock<IEmailSender> _emailSender;
         private Mock<IXtraMessageBox> _messageBox;
+        private DateTime dateTime = new DateTime(2017, 1, 1);
+        private Housekeeper housekeeper;
 
         private HousekeeperService _keeperService;
 
@@ -29,19 +31,25 @@ namespace TestNinja.UnitTests.Mocking
             _messageBox = new Mock<IXtraMessageBox>();
 
             //Setup
-            var result = new List<Housekeeper>
+            housekeeper = new Housekeeper
             {
-                new Housekeeper
-                {
-                    Email = "a",
-                    FullName = "b",
-                    Oid = 1,
-                    StatementEmailBody = "c"
-                }
+                Email = "a",
+                FullName = "b",
+                Oid = 1,
+                StatementEmailBody = "c"
             };
 
+            //Setup Mocks
             _unitOfWork.Setup(r => r.Query<Housekeeper>())
-                .Returns(result.AsQueryable);
+                .Returns(new List<Housekeeper> { housekeeper }.AsQueryable);
+
+            _statementGenerator.Setup(sg => sg.SaveStatement(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>()))
+                .Returns("filename");
+
+            _emailSender.Setup(es => es.EmailFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+
+            _messageBox.Setup(mb => mb.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButtons>()));
+
 
             //Inject Dependency
             _keeperService = new HousekeeperService(
@@ -52,17 +60,92 @@ namespace TestNinja.UnitTests.Mocking
                 );
         }
 
+        //Interaction Tests
+        //Scenario 1 - Confirm Save Statement Recieves Correct Details.
         [Test]
         public void SendStatementEmails_WhenCalled_ShouldGenerateStatements()
         {
             //Arrange
 
-
             //Act
-            _keeperService.SendStatementEmails(new DateTime(2017, 1, 1));
+            _keeperService.SendStatementEmails(dateTime);
 
             //Assert
-            _statementGenerator.Verify(sg => sg.SaveStatement(1, "b", (new DateTime(2017, 1, 1))));
+            _statementGenerator.Verify(sg => sg.SaveStatement(housekeeper.Oid, housekeeper.FullName, dateTime));
+        }
+
+        //Scenario 2 - Confirm Email Sender Recieves Correct Details.
+        [Test]
+        public void SendStatementEmails_WhenCalled_ShouldEmailHouseKeeper()
+        {
+            //Arrange
+
+            //Act
+            _keeperService.SendStatementEmails(dateTime);
+
+            //Assert
+            _emailSender.Verify(es =>
+            es.EmailFile(housekeeper.Email, housekeeper.StatementEmailBody, "filename", "Sandpiper Statement 2017-01 b"));
+        }
+
+        //Scenario 3 - Confirm IMessageBox Recieved Correct Details
+        [Test]
+        public void SendStatementEmails_WhenCalled_ShouldPromptMessageBox()
+        {
+            //Arrange
+            _emailSender.Setup(es => es.EmailFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception("Some Crazy Web Exception"));
+
+            //Act
+            _keeperService.SendStatementEmails(dateTime);
+
+            //Assert
+            _messageBox.Verify(mb => mb.Show("Some Crazy Web Exception", "Email failure: " + housekeeper.Email, MessageBoxButtons.OK));
+        }
+
+        //Mosh Additional Scenarios
+        //Where a HouseKeep Has NOEmail, method should not be triggered
+        //Verify has a parameter called Times, which allows us to verify the number of times a method is called. For us Times.Never
+        [Test]
+        public void SendStatementEmails_HouseKeepersEmailIsNull_ShouldNotSendEmail()
+        {
+            //Arrange
+            housekeeper.Email = null;
+
+            //Act
+            _keeperService.SendStatementEmails(dateTime);
+
+            //Assert
+            _emailSender.Verify(es => es.EmailFile(housekeeper.Email, housekeeper.StatementEmailBody, "filename", "Sandpiper Statement 2017-01 b"), Times.Never);
+        }
+
+        //Scenario - Where Test is just whitespace
+        //Congrats we found a bug, refactor to include IsNullOrEmpty
+        [Test]
+        public void SendStatementEmails_HouseKeepersEmailIsWhitespace_ShouldNotSendEmail()
+        {
+            //Arrange
+            housekeeper.Email = " ";
+
+            //Act
+            _keeperService.SendStatementEmails(dateTime);
+
+            //Assert
+            _emailSender.Verify(es => es.EmailFile(housekeeper.Email, housekeeper.StatementEmailBody, "filename", "Sandpiper Statement 2017-01 b"), Times.Never);
+        }
+
+        //Scenario - Email is Empty
+        [Test]
+        public void SendStatementEmails_HouseKeepersEmailIsEmpty_ShouldNotSendEmail()
+        {
+            //Arrange
+            housekeeper.Email = "";
+
+            //Act
+            _keeperService.SendStatementEmails(dateTime);
+
+            //Assert
+            _emailSender.Verify(es => es.EmailFile(housekeeper.Email, housekeeper.StatementEmailBody, "filename", "Sandpiper Statement 2017-01 b"), Times.Never);
         }
     }
 }
